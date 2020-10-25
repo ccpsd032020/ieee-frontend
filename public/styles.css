@@ -1,0 +1,57 @@
+/* custom style sheet */
+
+.add_btn{
+    width: 150px;
+}
+
+.pointer_cursor{
+    cursor: pointer;
+}
+
+.event-card{
+    background-color : transparent;
+    box-shadow:none !important;
+    border: 0;
+}
+
+.closed-event-card{
+    height: 300px;
+}
+
+.event-card-img{
+    z-index: 2;
+    overflow: hidden;
+    box-shadow :0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+    max-height: 350px
+}
+
+.event-card-body{
+    z-index:1;
+    margin-left:4%;
+    margin-right:4%;
+    box-shadow:0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    /* background-color: #2e2e2e; */
+}
+
+.vl {
+    border-left: 50% solid #fff;
+    height: 50%;
+  }
+
+  .mycontent-left {
+    border-right: 1px dashed #333;
+  }
+
+  .event-card-text{
+    font-size: 1rem;
+    color: grey;
+    font-weight: 400;
+  }
+
+  .view{
+      cursor: pointer!important;
+  }
+
+  .closed-event-img{
+      max-height: 150px !important;
+  }
