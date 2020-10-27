@@ -62,7 +62,7 @@ function EventView() {
       data.append("responder", responder);
 
       try{
-        const res = await Axios.post('/event/register',data);
+        const res = await Axios.post('https://ieeeserver.herokuapp.com/event/register',data);
   
         if(res.status === 201)
         {
