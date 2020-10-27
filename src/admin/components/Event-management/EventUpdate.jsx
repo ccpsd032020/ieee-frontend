@@ -98,7 +98,7 @@ function EventUpdate() {
     data.append("formLink",eventData.formLink);
     data.append("banner",eventData.banner);
     try{
-      const res = await Axios.post('/event/update',data, {
+      const res = await Axios.post('https://ieeeserver.herokuapp.com/event/update',data, {
         headers : {
           'Content-Type' : 'multipart/form-data'
         }
