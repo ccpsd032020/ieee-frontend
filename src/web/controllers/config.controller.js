@@ -4,7 +4,7 @@ class Config {
     constructor() {
     //backend server details
       
-      this.host = "https://ieeeserver.herokuapp.com/";
+      this.host = "https://ieeeserver.herokuapp.com";
      
       this.port = "";
     }
