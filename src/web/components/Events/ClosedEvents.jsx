@@ -35,7 +35,7 @@ function ClosedEvents() {
                <div className="col">
           <div className="card mt-5">
             <div className="view closed-event-img">
-              <img className="card-img-top" src={__dirname+"images/Events/"+events.banner}
+              <img className="card-img-top" src={events.banner}
                 alt="Card image cap" />
             </div>
             <div className="card-body">
