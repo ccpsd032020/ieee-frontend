@@ -86,7 +86,7 @@ function EventView() {
       data.append("responder", responder);
 
       try{
-        const res = await Axios.post('/event/register',data);
+        const res = await Axios.post('https://ieeeserver.herokuapp.com/event/register',data);
   
         if(res.status === 201)
         {
@@ -122,7 +122,7 @@ function EventView() {
       <div className="row">
         <div className="col-12 col-md-12 col-lg-8 order-1 order-md-1">
         <div className="row">
-        <img className="mb-4 shadow-lg bg-white rounded" alt="Event Banner" src={__dirname+"images/Events/"+event.banner} style={{float:"left", width:"100%", maxHeight:"300px" }}/>
+        <img className="mb-4 shadow-lg bg-white rounded" alt="Event Banner" src={event.banner} style={{float:"left", width:"100%", maxHeight:"300px" }}/>
      </div>
           <div className="row">
             <div className="col-12 col-sm-6">
