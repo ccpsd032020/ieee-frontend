@@ -176,7 +176,7 @@ function EventUpdate() {
 
     <div class="form-group">
       <label for="banner">Event Banner</label>
-      <img className="mb-4 shadow-lg bg-white rounded"  src={__dirname+"images/Events/"+eventData.banner} style={{ width:"100%", maxHeight:"300px", display :bannerChange && "none"}}/>
+      <img className="mb-4 shadow-lg bg-white rounded"  src={eventData.banner} style={{ width:"100%", maxHeight:"300px", display :bannerChange && "none"}}/>
       <input type="file" class="form-control-file" id="banner" accept="image/*" onChange={handleBanner}/>
     </div>
 
