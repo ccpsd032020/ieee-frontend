@@ -91,7 +91,7 @@ function EventView() {
         <div className="card-body">
           <div className="row">
             <div className="col-12 col-md-12 col-lg-8 order-1 order-md-1">
-            <img className="mb-4 shadow-lg bg-white rounded w-100" alt="Event Banner" src={__dirname+"images/Events/"+event.banner} style={{float:"left", maxWidth:"100%", maxHeight:"300px" }} />
+            <img className="mb-4 shadow-lg bg-white rounded w-100" alt="Event Banner" src={event.banner} style={{float:"left", maxWidth:"100%", maxHeight:"300px" }} />
          
               <div className="row">
                 <div className="col-12 col-sm-6">
