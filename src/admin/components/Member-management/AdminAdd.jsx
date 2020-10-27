@@ -28,7 +28,6 @@ const AdminAdd = (props) => {
     // alert(JSON.stringify(admin))
     e.preventDefault()
     const result = await add_admin (admin)
-    console.log(result);
     if(result.code == 200)
     {
       clear()
@@ -39,23 +38,7 @@ const AdminAdd = (props) => {
 
   }
 
-  const add = () => {
-    console.log("Add");
-    setMember({
-      addfname : 'Prabhasha' , 
-      addlname : 'Amarathunga' ,
-      addmname : 'Prabhasha Amarathunga' ,
-      addmnumber : '20204646' ,
-      addpemail : 'prabhasha.amarathunga@gmail.com' ,
-      addoemail : 'prabhasha.amarathunga@ieee.com' ,
-      addphone : '0716401842' ,
-      addpassword : '1234' ,
-      addcpassword : '1234' ,
-    })
-  }
-
   const clear = () => {
-    console.log("Clear call");
     setMember({
         fname : '' , 
         lname : '' ,
@@ -187,14 +170,6 @@ const AdminAdd = (props) => {
                   onClick={clear}
                 >
                   Cancel
-                </button>
-                
-                <button
-                  type="button"
-                  className="btn btn-secondary  mr-1 my-2"
-                  onClick={add}
-                >
-                  Demo
                 </button>
 
                 <button type="submit" className="btn btn-primary  mr-1 my-2">

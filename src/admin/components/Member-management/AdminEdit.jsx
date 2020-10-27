@@ -39,11 +39,9 @@ const AdminEdit = (props) => {
 
   const onLoadAdmin = async (newId) => {
     const result = await get_specific_admin(newId)
-    console.log(result.data.data);
     // const newD = result.data.data
   
-   await console.log(admin);
-   setAdmin(result.data.data)
+   await setAdmin(result.data.data)
   }
 
   const history = useHistory();
@@ -59,7 +57,6 @@ const AdminEdit = (props) => {
     // alert(JSON.stringify(admin))
     e.preventDefault()
     const result = await update_admin (admin, id)
-    console.log(result);
     if(result.code == 200)
     {
       Config.setToast("Update  successfully")
@@ -93,12 +90,11 @@ const res = await admin_delete(data);
 
   const reset_pw = (data) =>{
     
-    console.log(admin.new_passord);
     if(admin.new_passord == null || admin.new_passord == ""){
-     return Config.setToast("Plase provide password")
+     return Config.setToast("Please provide a password")
     }
     if(admin.cons_password.localeCompare(admin.new_passord) != 0){
-      return Config.setToast("Password did not match")
+      return Config.setToast("Password didn't match")
     }
 
     update_password_By_admin(admin.memberShipNo,admin.new_passord ).then( response =>{

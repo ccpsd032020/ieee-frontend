@@ -30,7 +30,6 @@ const MemberEdit = (props) => {
   });
 
   useEffect(() => {
-    console.log(newId);
     onLoadMemebrer(newId);
 }, []); 
 
@@ -42,10 +41,8 @@ function reload() {
 
   const onLoadMemebrer = async (newId) => {
     const result = await get_specific_mem(newId)
-    console.log(result.data.data);
   
-   await console.log(member);
-   setMember(result.data.data)
+    await setMember(result.data.data)
   }
 
   const removeMember = async (mem, state) => {
@@ -78,7 +75,7 @@ function reload() {
 
     e.preventDefault()
     const result = await update_member (member, id)
-    console.log(result);
+
     if(result.code == 200)
     {
       Config.setToast("Update  successfully")
@@ -91,7 +88,6 @@ function reload() {
   //Affiliation--------------------------------------
   const handleAffChange = (e) => {
     setMember({ ...member, selectaffiID: e.value });
-    console.log(e.value);
   };
 
   const [affiliations, setAffiliations] = useState([]);
@@ -102,7 +98,6 @@ function reload() {
   async function getAffData() {
     var res = await get_all_affiliations();
     await setAffiliations(res.data.data);
-    console.log("aff: " + affiliations);
   }
 
   const sel = affiliations.map((item) => {
@@ -110,7 +105,6 @@ function reload() {
 
     container["value"] = item._id;
     container["label"] = item.affiliationname;
-    console.log("sel: " + JSON.stringify(container));
     return container;
   });
 

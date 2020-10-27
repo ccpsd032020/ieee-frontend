@@ -11,7 +11,7 @@ class Sidebar extends Component {
     super(props);
     let role  = (props.auth &&  
       props.auth.user &&  props.auth.user.role == "Chair") ? 1:0
-    console.log(role)
+
     this.state = {
       loginState: false,
       user: "",
@@ -22,7 +22,7 @@ class Sidebar extends Component {
 
   check_auth = () => {
     const cheeck_auth = this.props.auth.isAuthenticated;
-    console.log(cheeck_auth);
+
     if (!cheeck_auth) {
       this.props.history.push("/AdminLogin")
     }
@@ -33,8 +33,7 @@ class Sidebar extends Component {
   }
 
   componentDidMount = () => {
-    console.log(this.props.auth.isAuthenticated);
-    console.log(this.props.auth);
+
     this.setState({
       user: this.props.auth.user.fname,
       ulname: this.props.auth.user.lname,

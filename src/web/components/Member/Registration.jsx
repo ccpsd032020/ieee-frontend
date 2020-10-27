@@ -2,7 +2,6 @@ import React , {useState, useEffect}from 'react';
 import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import NavBar from '../Common/NavBar';
 import Footer from '../Common/Footer';
-import Background from "../../images/Registration.jpg";
 import Select from "react-select";
 import { get_all_affiliations } from "../../../admin/controllers/affiliation.controller";
 
@@ -34,7 +33,6 @@ const Registration = (props) => {
     // alert(JSON.stringify(member))
     e.preventDefault()
     const result = await add_member_requset (member)
-    console.log(result);
     if(result.code == 200)
     {
       clear()
@@ -46,7 +44,6 @@ const Registration = (props) => {
   }
 
   const add = () => {
-    console.log("Add");
     setMember({
       addfname : 'Prabhasha' , 
       addlname : 'Amarathunga' ,
@@ -61,7 +58,6 @@ const Registration = (props) => {
   }
 
   const clear = () => {
-    console.log("Clear call");
     setMember({
       addfname : '' , 
       addlname : '' ,
@@ -85,7 +81,6 @@ const Registration = (props) => {
 //Affiliation--------------------------------------
 const handleAffChange = (e) => {
     setMember({ ...member, selectaffiID: e.value });
-    console.log(e);
  
 };
 
@@ -97,7 +92,7 @@ useEffect(() => {
 async function getAffData() {
   var res = await get_all_affiliations();
   await setAffiliations(res.data.data);
-  console.log("aff: " + affiliations);
+
 }
 
 const sel = affiliations.map((item) => {
@@ -105,7 +100,6 @@ const sel = affiliations.map((item) => {
 
   container["value"] = item._id;
   container["label"] = item.affiliationname;
-  console.log("sel: " + JSON.stringify(container));
   return container;
 });
 
@@ -115,7 +109,6 @@ const getcurrentAff = () => {
 
 const validate = (data) =>{
     
-  console.log(member.addpassword);
   if(member.addpassword == null || member.addpassword == ""){
    return Config.setToast("Plase provide password")
   }

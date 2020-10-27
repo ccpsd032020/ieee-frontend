@@ -48,7 +48,6 @@ const MemberRequest = (props) => {
          handleShow()
            get_past_designation(data).then( response =>{
              setpastDesg(response.data)
-             console.log(pastDesg);
            })
          
   }
@@ -151,7 +150,6 @@ const MemberRequest = (props) => {
       </Modal>
         {/* <!-- /.container-fluid --> */}
       </div>
-      {console.log("bye")}
     </section>
   );
 };
