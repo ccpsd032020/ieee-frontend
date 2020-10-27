@@ -32,7 +32,7 @@ function Carousel() {
         if(i == 1){   return (
           <div className="carousel-item active" key={index}>
             <div className="view">
-              <img className="d-block w-100" src={__dirname+"images/Events/"+events.banner}
+              <img className="d-block w-100" src={events.banner}
                 alt="Third slide" />
               <div className="mask rgba-black-slight"></div>
             </div>
@@ -43,7 +43,7 @@ function Carousel() {
           return (
             <div className="carousel-item" key={index}>
               <div className="view">
-                <img className="d-block w-100" src={__dirname+"images/Events/"+events.banner}
+                <img className="d-block w-100" src={events.banner}
                   alt="Third slide" />
                 <div className="mask rgba-black-slight"></div>
               </div>
