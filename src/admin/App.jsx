@@ -37,6 +37,8 @@ import EventReportView from "./components/EventReport-management/EventReportView
 import ManageAffiliation from "./components/StudentBranch-management/ManageAffiliation";
 import StudentForm from "./components/StudentBranch-management/StudentForm";
 import AffiliationTable from "./components/StudentBranch-management/AffiliationTable";
+import Affiliationview from './components/StudentBranch-management/Affiliationview';
+import ViewMembers from './components/StudentBranch-management/ViewMembers';
 import AdminAdd from "./components/Member-management/AdminAdd";
 import AdminList from "./components/Member-management/AdminList";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -197,9 +199,17 @@ class App extends Component {
                   {" "}
                   <EventReportView />{" "}
                 </Route>
-                <Route path="/Admin/ManageAffiliation">
+                <Route path="/Admin/ManageAffiliation/:affiId">
                   {" "}
                   <ManageAffiliation />{" "}
+                </Route>
+                <Route path="/Admin/ViewMembers/:affiID">
+                  {" "}
+                  <ViewMembers />{" "}
+                </Route> 
+                <Route path="/Admin/Affiliationview/:affiID">
+                  {" "}
+                  <Affiliationview />{" "}
                 </Route>
                 <Route path="/Admin/StudentForm">
                   {" "}

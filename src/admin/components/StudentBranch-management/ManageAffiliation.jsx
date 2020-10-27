@@ -1,175 +1,149 @@
-import React,{useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Config from '../../controllers/config.controller';
-import { get_all_active_members} from '../../controllers/memeber.controller'
+import { get_affiliation } from '../../controllers/affiliation.controller';
+import {useParams } from "react-router-dom";
 import Axios from 'axios';
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/js/bootstrap"
+import 'jquery/dist/jquery.min.js';
+// import { Multiselect } from 'multiselect-react-dropdown';
 
-function EventForm(props) {
+function ManageAffiliation() {
 
-  const [eventData,setEventData] = useState({eventName:'',eventDate:'',startTime:'',endTime:'',venue:'',description:'',hostingAffiliation:'',volunteers:[''],formLink:'',banner:null });
-  const [vols,setVols] = useState([]);
+  const [affiliationData,setAffiliationData] = useState({affiliationtype:'',affiliationname:'',affiliationno:'',date:'',status:'' });
 
-  const [members, Setmembers] = useState([]);
+
+  var id = useParams();
+
 
     useEffect(() => {
-      getData();
+        getData(id.affiId);
   }, []); 
 
 
-  async function getData() {
-    var res = await get_all_active_members()
-    await   Setmembers(res.data.data);
-  }
+    const getData = async (id) => {
 
-  const handleChange = event =>
+        var affiliationResult = await get_affiliation(id)
+        console.log("id: " + id);
+     
+        setAffiliationData(affiliationResult.data.data);
+        await console.log("affiliationData: " + JSON.stringify(affiliationData));
+        
+    }
+
+
+
+  const handleChange = affiliation =>
   { 
-    setEventData({...eventData, [event.target.id] :event.target.value})
-    // console.log(eventData.eventName+' '+eventData.eventDate+' '+eventData.startTime+' '+eventData.endTime+' '+eventData.venue+' '+eventData.description+' '+eventData.hostingAffiliation+' '+eventData.volunteers+' '+eventData.banner);
+    setAffiliationData({...affiliationData, [affiliation.target.id] :affiliation.target.value});
   };
     
-  const handleVolunteers = event =>
-  { 
-    if(!vols.includes(event.target.value))
-    {
-      vols.push(event.target.value); 
-      setEventData({...eventData, volunteers : vols}) 
-    }else{
-      if(vols.length === 1 ){
-        vols.splice(0,vols.length)
-      }else{
-        var index = vols.indexOf(event.target.value);
-        vols.splice(index,1);
-      }
-    }
-  };
 
-  const handleBanner = event =>
-  {  setEventData({...eventData, banner : event.target.files[0] })};
+
+ 
 
   const clear = () => {
-  setEventData({eventName:'',eventDate:'',startTime:'',endTime:'',venue:'',description:'',hostingAffiliation:'',volunteers:[''],formLink:'',banner:null  })
-  setVols([]);
+  setAffiliationData({affiliationtype:'',affiliationname:'',affiliationno:'',date:'',status:''  })
+  //setVols([]);
   }
 
-  const send = async event =>{
-    event.preventDefault();
-    const data = new FormData();
-    data.append("eventName",eventData.eventName);
-    data.append("eventDate",eventData.eventDate);
-    data.append("startTime",eventData.startTime);
-    data.append("endTime",eventData.endTime);
-    data.append("venue",eventData.venue);
-    data.append("description",eventData.description);
-    data.append("hostingAffiliation",eventData.hostingAffiliation);
-    data.append("volunteers",eventData.volunteers)
-    data.append("formLink",eventData.formLink);
-    data.append("banner",eventData.banner);
+  const send = async affiliation =>{
+    affiliation.preventDefault();
+      const data = new FormData();
+      data.append("affiID", id.affiId);
+    data.append("affiliationtype",affiliationData.affiliationtype);
+    data.append("affiliationname",affiliationData.affiliationname);
+    data.append("affiliationno",affiliationData.affiliationno);
+    data.append("date",affiliationData.date);
+    data.append("status",affiliationData.status);
+    
     try{
-      const res = await Axios.post('/event/addEvent',data, {
+      const res = await Axios.post('/affiliation/update',data, {
         headers : {
           'Content-Type' : 'multipart/form-data'
         }
       });
 
-      if(res.status === 201)
+      if(res.status === 200)
       {
         clear()
-        Config.setToast("Event added successfully")
+        Config.setToast("Affiliation Updated Successfully!")
       }
     }catch(err){
       if(err.response.status === 500)
-          console.log('There was a problem with then server');
+          Config.setToast('There was a problem with then server');
         else
           console.log(err.response.data);
     }
   }
 
-  const loadMembers = () => {
-    return   members.map((member, index) => {
-      return(  
-      <option value={member.memberShipNo} key={index}> {member.memberShipNo}</option>
-      )
-    })
-  }
-
   return (    <div>
     {/* <ContentHeader pageName={props.page}/> */}
      <section className="content w-100" >
+         {console.log(affiliationData)}
   <div className="container-fluid d-flex justify-content-center">
   <div className="card card-warning w-50">
   <div className="card-header">
-    <h3 className="card-title">Event Form</h3>
+    <h3 className="card-title">Affiliation Update Form</h3>
   </div>
-  <form id="eventForm"  method="post" onSubmit={send}>
+  <form id="affiliationUpdate"  method="post" onSubmit={send}>
     <div className="card-body">
 
-      <div className="form-group">
-        <label htmlFor="eventName">Event Name</label>
-        <input type="text" value={eventData.eventName} onChange={handleChange}  className="form-control" id="eventName" placeholder="Enter event name" required/>
-      </div>
 
-      <div className="form-group">
-        <label htmlFor="eventDate">Date</label>
-        <input type="date" id="eventDate" value={eventData.eventDate} onChange={handleChange} className="form-control" required/>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="eventTime">Start Time</label>
-        <input type="time" id="startTime" value={eventData.startTime} onChange={handleChange} className="form-control" required />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="eventTime">End Time</label>
-        <input type="time" id="endTime" value={eventData.endTime} onChange={handleChange} className="form-control"/>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="venue">Venue</label>
-        <input type="text" value={eventData.venue} onChange={handleChange} className="form-control" id="venue" placeholder="Enter event venue" required/>
-      </div>
-      <div className="form-group">
-        <label htmlFor="description">Description</label>
-      <textarea id="description" value={eventData.description} onChange={handleChange} placeholder="Place some text here"
-      style={{width: "100%", height: "200px", fontSize: "14px", lineHeight: "18px", border: "1px solid #dddddd", padding: "10px"}} />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="hostingAffiliation">Hosting Affiliation</label>
-        <input type="text" value={eventData.hostingAffiliation} onChange={handleChange}  className="form-control" id="hostingAffiliation" placeholder="Enter hosting affiliation" required/>
-      </div>
-     
-      <div className="form-group">
-          <label>Volunteers</label>
-          <select id="volunteers" className="form-control"  value={vols} onChange={handleVolunteers}  data-placeholder="Select volunteers" style={{width: "100%"}} multiple>      
-            {loadMembers()}
-          </select>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="formLink">Google Form link</label>
-        <input type="text" value={eventData.formLink} onChange={handleChange}  className="form-control" id="formLink" placeholder="Enter Google Form link" />
-      </div>
-  
-      <div className="form-group">
-        <label htmlFor="eventBanner">Event Banner</label>
-        <div className="input-group">
-          <div className="custom-file">
-            <input type="file" className="form-control" id="banner" accept="image/*" onChange={handleBanner} />
-            <label className="custom-file-label" htmlFor="banner">Choose an image</label>
-          </div>
-        </div>
+    <div className="form-group">
+      <label htmlFor="affiliationtype">Affiliation Type</label>
+      <select className="select"  name="affiliationtype"   style={{ width: "100%" }} value={affiliationData.affiliationtype} onChange={handleChange}  className="form-control" id="affiliationtype" placeholder="Enter Affiliation Type" required>
+                <option>Student Branch</option>
+                <option>Women In Enginerring Affiliation</option>
+                <option>Young Professionals Affiliation</option>
+                <option>Technical Chapter</option>
+                
+              </select>
       </div>
 
       {/* <div className="form-group">
-        <label htmlFor="eventBanner">Event Banner</label>
-            <input type="file" className="form-control" id="banner" name="banner" accept="image/*" onChange={handleBanner} />
+        <label htmlFor="affiliationtype">Affiliation Type</label>
+        <input type="text" value={affiliationData.affiliationtype} onChange={handleChange}  className="form-control" id="affiliationtype" placeholder="Enter Affiliation Type" required/>
       </div> */}
 
+
+      <div className="form-group">
+        <label htmlFor="affiliationname">Affiliation Name</label>
+        <input type="text" value={affiliationData.affiliationname} onChange={handleChange} className="form-control" id="affiliationname" placeholder="Enter Affiliation Name" required/>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="affiliationno">IEEE Affiliation Number</label>
+        <input type="text" value={affiliationData.affiliationno} onChange={handleChange}  className="form-control" id="affiliationno" placeholder="Enter IEEE Affiliation number" required/>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="date">Date</label>
+        <input type="date" id="date" value={affiliationData.date.slice(0,10)} onChange={handleChange} className="form-control" required/>
+      </div>
+
+      
+      {/* <div className="form-group">
+        <label htmlFor="status">Status</label>
+        <input type="text" value={affiliationData.status} onChange={handleChange}  className="form-control" id="status" placeholder="Enter the status" required/>
+      </div> */}
+
+      <div className="form-group">
+      <label htmlFor="status">Status</label>
+      <select className="select"  name="status"   style={{ width: "100%" }} value={affiliationData.status} onChange={handleChange}  className="form-control" id="status" placeholder="Enter the status" required>
+                <option>Available</option>
+                <option>Not Available</option>
+                
+              </select>
+      </div>
+
+      
 
     </div>
     {/* <!-- /.card-body --> */}
 
     <div className="card-footer">
-      <button type="submit" className="btn btn-primary">Publish</button>
+      <button type="submit" className="btn btn-primary">Update Affiliation</button>
     </div>
   </form>
   <div className="d-none" id="dialog-confirm" title="Empty the recycle bin?">
@@ -179,10 +153,11 @@ function EventForm(props) {
 </div>
 </section>
 </div>);
+
+
 }
 
-
-export default EventForm;
+export default ManageAffiliation;
 
 
 //https://tempusdominus.github.io/bootstrap-4/Usage/ - date and time picker
