@@ -11,7 +11,6 @@ class Sidebar extends Component {
     super(props);
     let role  = (props.auth &&  
       props.auth.user &&  props.auth.user.role == "Chair") ? 1:0
-
     this.state = {
       loginState: false,
       user: "",
@@ -22,7 +21,6 @@ class Sidebar extends Component {
 
   check_auth = () => {
     const cheeck_auth = this.props.auth.isAuthenticated;
-
     if (!cheeck_auth) {
       this.props.history.push("/AdminLogin")
     }
@@ -33,10 +31,10 @@ class Sidebar extends Component {
   }
 
   componentDidMount = () => {
-
     this.setState({
       user: this.props.auth.user.fname,
       ulname: this.props.auth.user.lname,
+      affiID:this.props.auth.user.affiID,
     });
     if (this.props.auth.user.role != undefined) {
       if (this.props.auth.user.role == "Chair")
@@ -131,6 +129,7 @@ class Sidebar extends Component {
                 </li>
               ) : null}
 
+{this.state.role != 1 ? (
               <li className="nav-item pointer_cursor">
                 <Link
                   id="affiliationNav"
@@ -142,18 +141,17 @@ class Sidebar extends Component {
                   <span className="badge badge-info right"></span>
                 </Link>
               </li>
-
-              <li className="nav-item pointer_cursor">
+             ):( <li className="nav-item pointer_cursor">
                 <Link
                   id="affiliationNav"
                   className="nav-link"
-                  to="/Admin/Affiliationview"
+                  to={`/Admin/Affiliationview/${this.state.affiID}`}
                 >
                   <i className="nav-icon fas fa-user-graduate"></i>
                   Affiliation View
                   <span className="badge badge-info right"></span>
                 </Link>
-              </li>
+              </li>)}
                         {this.state.role != 1 ? (
               <li className="nav-item pointer_cursor">
                 <Link
