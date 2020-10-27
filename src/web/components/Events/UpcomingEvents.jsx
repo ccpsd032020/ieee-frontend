@@ -37,7 +37,7 @@ function UpcomingEvents() {
                 return (
                     <Link to={"/view/" + events._id} key={index} style={{ display: "block" }} >
                         <div className="card d-flex mt-5 justify-content-center event-card " >
-                            <img className="card-img-top h-75 d-inline-block event-card-img" src={__dirname + "images/Events/" + events.banner} alt="Card image cap" />
+                            <img className="card-img-top h-75 d-inline-block event-card-img" src={events.banner} alt="Card image cap" />
                             <div className="card-body event-card-body">
                                 <h4 className="card-title">{events.eventName}</h4>
                                 <hr className="hr-dark mt-4" />
