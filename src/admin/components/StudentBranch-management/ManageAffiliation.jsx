@@ -58,7 +58,7 @@ function ManageAffiliation() {
     data.append("status",affiliationData.status);
     
     try{
-      const res = await Axios.post('/affiliation/update',data, {
+      const res = await Axios.post('https://ieeeserver.herokuapp.com/affiliation/update',data, {
         headers : {
           'Content-Type' : 'multipart/form-data'
         }

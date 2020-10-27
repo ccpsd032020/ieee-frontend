@@ -61,7 +61,7 @@ function StudentForm(props) {
     data.append("status",affiliationData.status);
     
     try{
-      const res = await Axios.post('/affiliation/addAffiliation',data, {
+      const res = await Axios.post('https://ieeeserver.herokuapp.com/affiliation/addAffiliation',data, {
         headers : {
           'Content-Type' : 'multipart/form-data'
         }
