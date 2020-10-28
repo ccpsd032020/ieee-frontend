@@ -5,8 +5,9 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
 //controllers
-import { update_designation, get_spec_designations } from '../../controllers/designation.controller'
+import { update_designation, get_spec_designations, get_spec_member, update_designation_mem, get_all_members } from '../../controllers/designation.controller'
 import { get_all_affiliations, get_affiliation } from "../../controllers/affiliation.controller";
+import { addPastDesignation } from '../../controllers/pastdes.controller'
 import { add_activity } from '../../controllers/activity.controller'
 import Config from '../../controllers/config.controller'
 
@@ -19,6 +20,20 @@ const EditDesignation = (props) => {
     //get passed parameters
     const id = useParams()
     const newId = id.desId
+
+    //variable to store past designations
+    let [pastdes, setPastDes] = useState({
+        title: "not set",
+        affiliationNo: "not set",
+        MemNo: "not set",
+        Year: "not set",
+        created_at: "not set",
+    });
+
+    //variable to store Designations
+    const [assignment, setAssignment] = useState({
+        MemNo: "",
+    });
 
     //variable to store Designations
     const [designation, setDesignation] = useState({
@@ -35,6 +50,76 @@ const EditDesignation = (props) => {
         parameters: "not set",
         datetime: "not set"
     });
+
+    //variable to store members
+    const [member, setMember] = useState([]);
+    useEffect(() => {
+        getMemData();
+
+    }, []);
+
+    //get members specific to logged users affiliation from data base
+    async function getMemData() {
+        var res = await get_all_members();
+        await setMember(res.data.data);
+    }
+
+    //handle form changes - general
+    const handleMemChange = (e) => {
+        //set MemNo for past designations variable
+        setPastDes({ ...pastdes, MemNo: e.value });
+        //set MemNo for designations variable
+        setAssignment({ ...assignment, MemNo: e.value });
+        window.selectedmem = setMemData(e.value);
+        mem();
+    }
+
+    //get member name relevent to a given _id
+    async function setMemDetails(id) {
+        var result = await get_spec_member(id)
+        if (result.data.data == null) {
+            return ("Member not found")
+        }
+        else {
+            return (result.data.data.memberShipNo + " - " + result.data.data.fname + " " + result.data.data.lname)
+        }
+    }
+
+    //get members details from database
+    async function getMemDet(id) {
+        if (id == "") {
+            window.selectedmem = "Select new member";
+        }
+        else {
+            var res = await get_spec_member(id);
+            if (res.data.data == null) {
+                window.selectedmem = "Member has been removed";
+            }
+            else {
+                window.selectedmem = res.data.data.memberShipNo + " - " + res.data.data.fname + " " + res.data.data.lname;
+            }
+        }
+    }
+
+    //get member data for a given _id
+    const setMemData = (id) => {
+        return member.map((member, index) => {
+            if (id == member._id) {
+                return (member.fname + " " + member.lname + " - " + member.memberShipNo);
+            }
+            else {
+                return ("");
+            }
+        });
+    };
+
+    //set options for select to show members
+    const selMem = member.map(item => {
+        const container = {};
+        container["value"] = item._id;
+        container["label"] = item.memberShipNo + " - " + item.fname + " " + item.lname;
+        return container;
+    })
 
     useEffect(() => {
         onLoadMemebrer(newId);
@@ -82,11 +167,29 @@ const EditDesignation = (props) => {
     //runs on submit
     const onSubmit = async (e) => {
         e.preventDefault()
+        //get date info
+        const date = new Date();
+        const currentYear = new Date().getFullYear();
+        setPastDes({
+            ...pastdes,
+            title: designation.title,
+            affiliationNo: designation.affiliationNo,
+            Year: currentYear.toString(),
+            created_at: date.toLocaleString()
+        });
+        designation.MemNo = await assignment.MemNo
+        pastdes.title = designation.title
+        pastdes.affiliationNo = designation.affiliationNo
+        pastdes.Year = currentYear.toString()
+        pastdes.created_at = date.toLocaleString()
+        await addPastDesignation(pastdes)
         //set parameters for activity variable
         var detAff = await setAffDetails(designation.affiliationNo)
-        activity.parameters = detAff + " / " + designation.title + " / " + designation.type;
+        var detMem = await setMemDetails(assignment.MemNo)
+        activity.parameters = detAff + " / " + designation.title + " / " + designation.type + "/" + detMem;
         //update designation
         const result = await update_designation(designation, id.desId)
+        const resu = await update_designation_mem(designation, id.desId)
         //add activity to database
         await add_activity(activity)
         if (result.code == 200) {
@@ -143,6 +246,13 @@ const EditDesignation = (props) => {
         )
     }
 
+    //select for members
+    const mem = () => {
+        return (
+            <Select required value="" className="select2" id="MemNo" name="MemNo" placeholder={window.selectedmem} style={{ width: "100%" }} onChange={handleMemChange} options={selMem} />
+        )
+    }
+
     //render form
     return (<section className="content" style={{ display: props.display }}>
         <div className="container-fluid">
@@ -186,6 +296,10 @@ const EditDesignation = (props) => {
                                                 </select>
                                             </div>
 
+                                            <div className="form-group">
+                                                <label>Member</label>
+                                                {mem()}
+                                            </div>
 
                                             <div className="row">
                                                 <div className="col-12">
