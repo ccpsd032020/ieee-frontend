@@ -6,7 +6,7 @@ import $ from "jquery"
 import { useSelector } from "react-redux";
 
 //controllers
-import { get_all_designations, remove_designation } from "../../controllers/designation.controller";
+import { get_all_designations, remove_designation, get_all_members, get_spec_member } from "../../controllers/designation.controller";
 import { get_all_affiliations, get_affiliation } from "../../controllers/affiliation.controller";
 import { add_activity } from '../../controllers/activity.controller';
 import Config from '../../controllers/config.controller'
@@ -109,6 +109,27 @@ const DesignationTable = (props) => {
         });
     };
 
+    //get membership no relevent to a given _id
+    const setMemNo = (id) => {
+        return member.map((member, index) => {
+            if (id == member._id) {
+                return (member.memberShipNo + " - " + member.fname + " " + member.lname);
+            }
+        });
+    };
+
+    //variable to store members
+    const [member, setMember] = useState([]);
+    useEffect(() => {
+        getMemData();
+    }, []);
+
+    //get all the members from database
+    async function getMemData() {
+        var res1 = await get_all_members();
+        await setMember(res1.data.data);
+    }
+
     //load table data
     const readydata = () => {
         return designation.map((designation, i) => {
@@ -117,6 +138,7 @@ const DesignationTable = (props) => {
                     <td>{setAffData(designation.affiliationNo)}</td>
                     <td>{designation.title}</td>
                     <td>{designation.type}</td>
+                    <td>{setMemNo(designation.MemNo)}</td>
                     <td className="project-actions text-center">
                         <Link to={`/Admin/EditDesignation/${designation._id}`} className="btn btn-primary btn-sm mr-1" style={{ color: 'black' }}>
                             {" "}
@@ -152,6 +174,7 @@ const DesignationTable = (props) => {
                                     <th>Branch</th>
                                     <th>Designation Title</th>
                                     <th>Type</th>
+                                    <th>Member</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
