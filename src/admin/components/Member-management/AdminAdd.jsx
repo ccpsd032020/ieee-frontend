@@ -154,6 +154,7 @@ const AdminAdd = (props) => {
                   <input
                     type="password"
                     className="form-control"
+                    name="addcpassword"
                     id="cpassword"
                     placeholder="Confirm Password"
                     onChange={handleChange}

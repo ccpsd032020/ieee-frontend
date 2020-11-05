@@ -43,20 +43,6 @@ const Registration = (props) => {
 
   }
 
-  const add = () => {
-    setMember({
-      addfname : 'Prabhasha' , 
-      addlname : 'Amarathunga' ,
-      addmname : 'Prabhasha Amarathunga' ,
-      addmnumber : '20204646' ,
-      addpemail : 'prabhasha.amarathunga@gmail.com' ,
-      addoemail : 'prabhasha.amarathunga@ieee.com' ,
-      addphone : '0716401842' ,
-      addpassword : '1234' ,
-      addcpassword : '1234' ,
-    })
-  }
-
   const clear = () => {
     setMember({
       addfname : '' , 
@@ -290,13 +276,6 @@ const validate = (data) =>{
                 </button>
                 <button type="submit" className="btn btn-primary float-right" onClick={(data)=>validate(member.memberShipNo)}>
                   Submit
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={add}
-                >
-                  Demo
                 </button>
               </div>
             </form>
