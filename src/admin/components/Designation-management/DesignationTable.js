@@ -162,7 +162,7 @@ const DesignationTable = (props) => {
                 <div className="card">
                     <div className="card-header">
                         <Link to="/Admin/AddDesignation" type="button" className="btn btn-info float-right add_btn">Add Designation</Link>
-                        <Link to="/Admin/PastDesignations" type="button" className="btn btn-info float-right add_btn">Past Designations</Link>
+                        <Link to="/Admin/PastDesignations" type="button" className="btn btn-info float-right add_btn mr-1 ">Past Designations</Link>
                     </div>
                     <div className="card-body">
                         <table
